@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
 function Af() {
+    const Letters = ["C", "D", "E", "G"];
     const [input, setInput] = useState('');
-    const q0Toq1 = input.startsWith('1');
-    const q1Toq2 = input.startsWith('11');
-    const q2Toq3 = input.startsWith('110');
-    const q3Toq4 = input === '1101';
 
     const handleChange = (e) => {
-        setInput(e.target.value);
+        const value = e.target.value.toUpperCase();
+        if (value.length <= 4 && value.split('').every(char => Letters.includes(char))) {
+            setInput(value);
+        }
     };
 
     return (
@@ -16,26 +16,25 @@ function Af() {
             <div className="flex w-full bg-gray-800 h-screen items-center justify-center">
                 <div className="flex w-full p-9 flex-col items-center justify-center">
                     <label htmlFor="text" className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
-                        Introduce la Cadena "1101"
+                        Introduce combinación de las letras "CDEG"
                     </label>
                     <input
                         type="text"
                         className="m-3 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         value={input}
                         onChange={handleChange}
-                        placeholder="1101"
+                        placeholder="CDEG"
                     />
                     <div className="bg-gray-700 w-full h-80 flex items-center justify-center space-x-5">
-                        <State visible={q0Toq1} label="q0" Start={q0Toq1} />
-                        <Arrow visible={q0Toq1} label="1" />
-                        <State visible={q0Toq1} label="q1" />
-                        <Arrow visible={q1Toq2} label="1" />
-                        <State visible={q1Toq2} label="q2" />
-                        <Arrow visible={q2Toq3} label="0" />
-                        <State visible={q2Toq3} label="q3" />
-                        <Arrow visible={q3Toq4} label="1" />
-
-                        <State visible={q3Toq4} label="q4" finalState={q3Toq4} />
+                        {input.length > 0 && <State label="q0" Start={true} />}
+                        {input.length > 0 && <Arrow label={input[0] || ''} />}
+                        {input.length > 0 && <State label="q1" />}
+                        {input.length > 1 && <Arrow label={input[1] || ''} />}
+                        {input.length > 1 && <State label="q2" />}
+                        {input.length > 2 && <Arrow label={input[2] || ''} />}
+                        {input.length > 2 && <State label="q3" />}
+                        {input.length === 4 && <Arrow label={input[3] || ''} />}
+                        {input.length === 4 && <State label="q4" finalState={true} />}
                     </div>
                 </div>
             </div>
@@ -43,21 +42,21 @@ function Af() {
     );
 }
 
-function Arrow({ visible, label }) {
+function Arrow({ label }) {
     return (
-        <div className={`relative ${visible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000 ease-in`}>
+        <div className="relative flex items-center">
             <svg className="h-10 w-16">
-                <line x1="0" y1="5" x2="40" y2="5" stroke="red" strokeWidth="2" />
-                <polyline points="35,0 40,5 35,10" stroke="red" strokeWidth="2" fill="none" />
+                <line x1="10" y1="5" x2="50" y2="5" stroke="red" strokeWidth="2" />
+                <polyline points="45,0 50,5 45,10" stroke="red" strokeWidth="2" fill="none" />
             </svg>
-            <span className="absolute -top-3 left-5 text-white">{label}</span>
+            <span className="absolute -top-3 left-6 text-white">{label}</span>
         </div>
     );
 }
 
-function State({ visible, label, finalState, Start }) {
+function State({ label, finalState, Start }) {
     return (
-        <div className={`relative flex items-center justify-center text-center rounded-full w-10 h-10 transition-opacity duration-700 ease-in ${visible ? 'opacity-100' : 'opacity-0'} ${finalState ? 'border-4 border-double border-black' : ''} ${Start ? 'border-4 border-dashed border-black' : ''}bg-blue-700`}>
+        <div className={`relative flex items-center justify-center text-center rounded-full w-10 h-10 ${finalState ? 'border-4 border-double border-black' : Start ? 'border-4 border-dashed border-black' : ''} bg-blue-700`}>
             {label}
         </div>
     );

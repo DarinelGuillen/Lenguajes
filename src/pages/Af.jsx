@@ -26,8 +26,7 @@ function Af() {
                         placeholder="1101"
                     />
                     <div className="bg-gray-700 w-full h-80 flex items-center justify-center space-x-5">
-                        {/* Estados y transiciones */}
-                        <State visible={q0Toq1} label="q0" />
+                        <State visible={q0Toq1} label="q0" Start={q0Toq1} />
                         <Arrow visible={q0Toq1} label="1" />
                         <State visible={q0Toq1} label="q1" />
                         <Arrow visible={q1Toq2} label="1" />
@@ -44,10 +43,9 @@ function Af() {
     );
 }
 
-// Componente para las flechas con animación
 function Arrow({ visible, label }) {
     return (
-        <div className={`relative ${visible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-700 ease-in`}>
+        <div className={`relative ${visible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000 ease-in`}>
             <svg className="h-10 w-16">
                 <line x1="0" y1="5" x2="40" y2="5" stroke="red" strokeWidth="2" />
                 <polyline points="35,0 40,5 35,10" stroke="red" strokeWidth="2" fill="none" />
@@ -57,10 +55,9 @@ function Arrow({ visible, label }) {
     );
 }
 
-// Componente para los estados con animación
-function State({ visible, label, finalState }) {
+function State({ visible, label, finalState, Start }) {
     return (
-        <div className={`relative flex items-center justify-center text-center rounded-full w-10 h-10 transition-opacity duration-700 ease-in ${visible ? 'opacity-100' : 'opacity-0'} ${finalState ? 'border-4 border-double border-black' : ''} bg-blue-700`}>
+        <div className={`relative flex items-center justify-center text-center rounded-full w-10 h-10 transition-opacity duration-700 ease-in ${visible ? 'opacity-100' : 'opacity-0'} ${finalState ? 'border-4 border-double border-black' : ''} ${Start ? 'border-4 border-dashed border-black' : ''}bg-blue-700`}>
             {label}
         </div>
     );

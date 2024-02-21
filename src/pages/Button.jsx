@@ -17,7 +17,7 @@ function Button() {
           onClick={() => navigate("/Af")} 
           className="w-1/2 h-20 text-white bg-blue-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-xl text-sm text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
         >
-          AF A GGG
+          Expresión Regular  A AF
         </button>
     </div>
   );

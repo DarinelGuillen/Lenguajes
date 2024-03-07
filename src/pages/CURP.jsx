@@ -12,7 +12,19 @@ function CURP() {
   const handlerGenerate = (e) => {
     e.preventDefault();
     console.log("🚀 ~ CURP ~ Name:", Name)
-
+    console.log("🚀 ~ CURP ~ SF:", SF)
+    console.log("🚀 ~ CURP ~ SM:", SM)
+    console.log("🚀 ~ CURP ~ Gender:", Gender)
+    console.log("🚀 ~ CURP ~ Birth:", Birth)
+    console.log("🚀 ~ CURP ~ Entiti:", Entiti)
+    // ? Ignote this
+    // !Obtener de los datos que se ingreso datos especificos
+    // * Para el SF apellido paterno quiero que obtengas solamente la primera letra de SF y la primera volcal de este
+    // *Para el SM apellido materno quiero que obtengas solamente la Primera letra
+    // *Para el Name solo obten la primera letra del nombre o de los nombres solo el la primera letra
+    // *Para el Brith fecha de nacimiento  obtendras del cualquier formato por ejemplo mi fecha es 18/12/2023 pero lo convertiras comenzando por año, mes y día, no confundir con la fecha de registro= 031218.
+    // *para el gender dependiendo lo que se selecione sera una letra Masculino=M o Femenino=F
+    // *Para el Entiti si Chapas debe de ser CS
 
   };
 
@@ -53,6 +65,7 @@ function CURP() {
                 <div class="">
                   <label htmlFor="text" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Genero</label>
                   {/* HERE GOES GENDER FEMENINE AN MASCULINE obteniendo valor de M y F de mas culino y femenino  */}
+                  {/* do on check onChange={(e) => setGender(e.target.value)}  M or F*/}
                   <div class="inline-flex items-center">
                     <label class="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor="check">
                       <input type="checkbox"

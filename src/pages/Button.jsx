@@ -25,6 +25,13 @@ function Button() {
       >
         Generar CURP
       </button>
+
+      <button
+        onClick={() => navigate("/Tree")}
+        className="w-[30%] p-5 h-20 text-white bg-gray-600 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-xl text-xl text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+      >
+        TREE
+      </button>
     </div>
   );
 }

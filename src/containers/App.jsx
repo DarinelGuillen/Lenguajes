@@ -5,6 +5,7 @@ import Button from '../pages/Button.jsx';
 import Filter from '../pages/Filter.jsx';
 import Af from '../pages/Af.jsx';
 import CURP from '../pages/CURP.jsx';
+import Tree from '../pages/Tree.jsx';
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="/Filter" element={<Filter/>}/>
         <Route path="/Af" element={<Af/>}/>
         <Route path="/CURP" element={<CURP/>}/>
+        <Route path="/Tree" element={<Tree/>}/>
       </Routes>
     </BrowserRouter>
   );

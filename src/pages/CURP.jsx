@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import QRCode from "react-qr-code";
 import '../assets/css/CURP.css'
 
-
 function CURP() {
-  const [verificationCode, setVerificationCode] = useState('');
   const [randomCode, setRandomCode] = useState('');
   const [firstName, setFirstName] = useState('');
   const [middleName, setMiddleName] = useState('');
@@ -14,8 +11,10 @@ function CURP() {
   const [month, setMonth] = useState('');
   const [year, setYear] = useState('');
   const [gender, setGender] = useState('');
-  const [birthPlace, setBirthPlace] = useState('');
+  const [birthPlace, setBirthPlace] = useState('CS'); // Default birth place set to Chiapas
   const [generatedCURP, setGeneratedCURP] = useState('');
+  const [verificationCode, setVerificationCode] = useState('');
+
 
   function generateRandomCode() {
     return Math.floor(10 + Math.random() * 90);
@@ -47,11 +46,17 @@ function CURP() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log("🚀 ~ handleSubmit ~ handleSubmit:")
+    if (!verificationCode) { // Verifica si verificationCode es undefined, null, o una cadena vacía ('')
+      if (verificationCode === '') {
+        alert('El código de verificación no existe. Por favor, ingresa el código.\n faltan datos');
+      } else {
+        alert('No se ha generado ningún código de verificación. Por favor, genera el código antes de continuar.');
+      }
+    } else {
+      console.log('Todo bien, código generado.');
 
-    if (verification !== randomCode.toString()) {
-      alert('Incorrect verification code.');
-      return;
-    }
+
 
     if (!firstName || !lastName || !day || !month || !year || !gender || !birthPlace) {
       alert('Please complete all required fields.');
@@ -65,6 +70,7 @@ function CURP() {
 
     const curp = generateCURP();
     setGeneratedCURP(curp);
+    }
   };
 
   const getSecondVowel = (surname) => {
@@ -108,16 +114,6 @@ function CURP() {
     return 'X';
   };
 
-  function downloadFile(curp) {
-    const element = document.createElement("a");
-    const file = new Blob([curp], { type: "text/plain" });
-    element.href = URL.createObjectURL(file);
-    element.download = "curp.txt";
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-  }
-
   const generateCURP = () => {
     let firstNameToGenerate = firstName.toUpperCase();
     if (firstNameToGenerate === 'MARIA' || firstNameToGenerate === 'JOSE') {
@@ -141,124 +137,95 @@ function CURP() {
 
   return (
     <>
-      <div className='container'>
-        <div className='containerform'>
-          <form className="form" onSubmit={handleSubmit}>
-            <div>
-              <p className="title">Enter your information</p>
-              <label>
-                <input className="input" type="text" placeholder="First Name" required="" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+      <div className={`bg-black h-screen w-100vw  ${generatedCURP ? 'flex justify-between' : 'flex justify-center'} `}>
+        <div className={`bg-white shadow-xl rounded-xl overflow-hidden w-1/2`}>
+          <form className="p-8 " onSubmit={handleSubmit}>
+            <p className="text-2xl font-semibold text-gray-800 mb-8">Enter your information</p>
+            <label className="block mb-8">
+              <input className="appearance-none border-double border-4 border-gray-300 rounded-xl w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="First Name" required value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+            </label>
+            <label className="block mb-8">
+              <input className="appearance-none border-double border-4 border-gray-300 rounded-xl w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Middle Name (optional)" value={middleName} onChange={(e) => setMiddleName(e.target.value)} />
+            </label>
+            <label className="block mb-8">
+              <input className="appearance-none border-double border-4 border-gray-300 rounded-xl w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Last Name" required value={lastName} onChange={(e) => setLastName(e.target.value)} />
+            </label>
+            <label className="block mb-8">
+              <input className="appearance-none border-double border-4 border-gray-300 rounded-xl w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Second Last Name" required value={secondLastName} onChange={(e) => setSecondLastName(e.target.value)} />
+            </label>
+            <div className="flex gap-4 mb-8">
+              <label className="flex-1">
+                <input className="appearance-none border-double border-4 border-gray-300 rounded-xl py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="Day of birth" maxLength="2" required value={day} onChange={handleDayChange} />
               </label>
-              <label>
-                <input className="input" type="text" placeholder="Middle Name (optional)" value={middleName} onChange={(e) => setMiddleName(e.target.value)} />
+              <label className="flex-1">
+                <input className="appearance-none border-double border-4 border-gray-300 rounded-xl py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="Month of birth" maxLength="2" required value={month} onChange={handleMonthChange} />
               </label>
-              <label>
-                <input className="input" type="text" placeholder="Last Name" required="" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-              </label>
-              <label>
-                <input className="input" type="text" placeholder="Second Last Name" required="" value={secondLastName} onChange={(e) => setSecondLastName(e.target.value)} />
+              <label className="flex-1">
+                <input className="appearance-none border-double border-4 border-gray-300 rounded-xl py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="Year of birth" maxLength="4" required value={year} onChange={handleYearChange} />
               </label>
             </div>
-            <div className="flexdate">
-              <div>
-                <label>
-                  <input className="input" type="number" placeholder="Day of birth" maxLength="2" required="" value={day} onChange={handleDayChange} />
-                </label>
-              </div>
-              <div>
-                <label>
-                  <input className="input" type="number" placeholder="Month of birth" maxLength="2" required="" value={month} onChange={handleMonthChange} />
-                </label>
-              </div>
-              <div>
-                <label>
-                  <input className="input" type="number" placeholder="Year of birth" maxLength="4" required="" value={year} onChange={handleYearChange} />
-                </label>
-              </div>
-            </div>
-            <label>
-              <select className="input" value={gender} onChange={(e) => setGender(e.target.value)}>
+            <label className="block mb-8">
+              <select className="appearance-none border-double border-4 border-gray-300 rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline" value={gender} onChange={(e) => setGender(e.target.value)}>
                 <option value="">Gender</option>
                 <option value="H">Male</option>
                 <option value="M">Female</option>
               </select>
             </label>
-            <label>
-            <select className="input" value={birthPlace} onChange={(e) => setBirthPlace(e.target.value)}>
-                <option value="">Select your birth place</option>
-                <option value="AS">Aguascalientes</option>
-                <option value="BC">Baja California</option>
-                <option value="BS">Baja California Sur</option>
-                <option value="CC">Campeche</option>
+            <label className="block mb-8">
+              <select className="appearance-none border-double border-4 border-gray-300 rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline" value={birthPlace} onChange={(e) => setBirthPlace(e.target.value)}>
                 <option value="CS">Chiapas</option>
-                <option value="CH">Chihuahua</option>
-                <option value="CL">Coahuila</option>
-                <option value="CM">Colima</option>
-                <option value="DF">Mexico City</option>
-                <option value="DG">Durango</option>
-                <option value="GT">Guanajuato</option>
-                <option value="GR">Guerrero</option>
-                <option value="HG">Hidalgo</option>
-                <option value="JC">Jalisco</option>
-                <option value="MC">State of Mexico</option>
-                <option value="MN">Michoacán</option>
-                <option value="MS">Morelos</option>
-                <option value="NT">Nayarit</option>
-                <option value="NL">Nuevo León</option>
-                <option value="OC">Oaxaca</option>
-                <option value="PL">Puebla</option>
-                <option value="QT">Querétaro</option>
-                <option value="QR">Quintana Roo</option>
-                <option value="SP">San Luis Potosí</option>
-                <option value="SL">Sinaloa</option>
-                <option value="SR">Sonora</option>
-                <option value="TC">Tabasco</option>
-                <option value="TS">Tamaulipas</option>
-                <option value="TL">Tlaxcala</option>
-                <option value="VZ">Veracruz</option>
-                <option value="YN">Yucatán</option>
-                <option value="ZS">Zacatecas</option>
               </select>
             </label>
-            <div className='flex'>
-              <div>
-                <button className="generationcode" type="button" onClick={handleRandomCodeGeneration}> Generate code</button>
-                <span>{randomCode}</span>
-              </div>
-              <div>
+            <div className='flex justify-around items-center mb-8'>
+              <button className="bg-blue-500 hover:bg-blue-700 rounded-xl text-white font-bold py-2 px-4   focus:outline-none focus:shadow-outline" type="button" onClick={handleRandomCodeGeneration}> Generate code</button>
+              <span className="ml-4">{randomCode}</span>
               <input
-                className="input"
+                className="appearance-none border-double border-4 border-gray-300 rounded-xl py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
                 type="text"
                 placeholder="Verification code"
+                disabled={!randomCode}
                 value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}/>
-              </div>
+                onChange={(e) => setVerificationCode(e.target.value)} />
+              <button className="bg-green-500 rounded-xl hover:bg-gray-900 text-white font-bold py-2 px-4 focus:outline-none focus:shadow-outline" type="submit" disabled={verificationCode !== randomCode.toString()}>Generate CURP</button>
             </div>
-            <button className="generation" type="submit">Generate CURP</button>
           </form>
         </div>
-        <div className='info'>
-          {generatedCURP && (
-            <div className='curp'>
-              <p>Applicant's CURP data:</p>
-              <p>First Name(s): {firstName} {middleName}</p>
-              <p>Last Name: {lastName}</p>
-              <p>Second Last Name: {secondLastName}</p>
-              <p>Gender: {gender}</p>
-              <p>Date of Birth: {day}/{month}/{year}</p>
-              <p>Birth Place: {birthPlace}</p>
-              <p>CURP: {generatedCURP}</p>
-                   <QRCode value={generatedCURP} size={90}/>
-                   <div>
-                    <button className="generationQR" onClick={() => downloadFile(generatedCURP)}>
-                      Download CURP
-                    </button>
-                    </div>
+        {generatedCURP && (
+          <div className=' w-1/2 h-screen bg-white rounded-xl flex-grow items-center justify-center'>
+            <div className='bg-black h-full flex-col items-center justify-center shadow-md rounded-xl p-12 pt-32'>
+              {/* <h1 className="text-2xl font-bold text-white mb-4">Applicant's CURP Data:</h1>
+              <p className="text-xl text-white"><span className="font-semibold">First Name(s):</span> {firstName} {middleName}</p>
+              <p className="text-xl text-white"><span className="font-semibold">Last Name:</span> {lastName}</p>
+              <p className="text-xl text-white"><span className="font-semibold">Second Last Name:</span> {secondLastName}</p>
+              <p className="text-xl text-white"><span className="font-semibold">Gender:</span> {gender}</p>
+              <p className="text-xl text-white"><span className="font-semibold">Date of Birth:</span> {day}/{month}/{year}</p>
+              <p className="text-xl text-white"><span className="font-semibold">Birth Place:</span> {birthPlace}</p> */}
+              <div className='flex items-center justify-center w-full'>
+
+                <div className='px-10  bg-white rounded-xl flex grow-0 items-center justify-center mt-20 '>
+                  <p className="animate-bounce text-[50px] text-black ">
+                    <span className="font-semibold">CURP:
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+
+              <div className='w-full  rounded-full flex items-center justify-center mt-10'>
+                <p className="text-[50px] text-white">
+
+                  {generatedCURP
+                  }</p>
+              </div>
             </div>
-          )}
-        </div>
+
+          </div>
+        )}
       </div>
     </>
+
+
   );
 }
+
 export default CURP;
